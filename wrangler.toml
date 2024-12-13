@@ -1,0 +1,7 @@
+name = "kv"
+main = "src/index.ts"
+compatibility_date = "2024-12-12"
+env = { }
+kv_namespaces = [
+    { binding = "KV", id = "50e5446363274bb1aad2d00522f43633" }
+]
