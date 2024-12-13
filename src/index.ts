@@ -38,8 +38,7 @@ export default {
       }
     } else if (request.method === "POST") {
       // Set value
-      const data = await request.json() as SetData;
-      console.log(data);
+      const data: SetData = await request.json();
       if (data.token !== env.SET_TOKEN) return new Response("Authentication failed.");
       for (const key in data) {
         if (key === "token") continue;
