@@ -1,6 +1,4 @@
-## Simple KV API
-
-This is a simple KV store API that allows you to store and retrieve key-value pairs. Send a `GET` request to retrieve a key-value pair, and `POST` an object to set one or multiple key-value pairs. Authentication is done with a two API keys -- one for getting values, and one for setting them. There are no no user accounts and no permissions -- just two keys, and two types of requests to one endpoint. You can embed these requests in websites, scripts, automations, or wherever else they might be helpful.
+## Simple KV API (D1)
 
 ### Setup
 
