@@ -1,0 +1,13 @@
+name = "kv"
+main = "src/index.ts"
+compatibility_date = "2024-12-12"
+env = { }
+
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[[d1_databases]]
+binding = "DB"
+database_name = "simple-kv-api"
+database_id = "376f3a90-ae3f-40ed-9fb9-8246e7313851"
