@@ -1,5 +1,3 @@
-import { KVNamespace } from '@cloudflare/workers-types';
-
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
@@ -12,7 +10,7 @@ interface SetData {
 }
 
 interface Env {
-  KV: KVNamespace;
+  DB: D1Database;
   GET_TOKEN: string;
   SET_TOKEN: string;
 }
@@ -32,7 +30,8 @@ export default {
       const key = params.get("key");
       try {
         if (!key) throw new Error("No key provided.");
-        const value = await env.KV.get(key);
+        const result = await env.DB.prepare("SELECT value FROM kv WHERE key = ?").bind(key).run();
+        const value = result.results[0]?.value as string;
         return new Response(value, { headers: corsHeaders });
       } catch (e) {
         console.log(e);
@@ -42,10 +41,12 @@ export default {
       // Set value
       const data: SetData = await request.json();
       if (data.token !== env.SET_TOKEN) return new Response("Authentication failed.");
+      const statements = [];
       for (const key in data) {
         if (key === "token") continue;
-        await env.KV.put(key, data[key]);
+       statements.push(env.DB.prepare("INSERT OR REPLACE INTO kv (key, value) VALUES (?, ?)").bind(key, data[key]));
       }
+      await env.DB.batch(statements);
       return new Response("Set!");
     } else {
       return new Response("Method not allowed.", { headers: corsHeaders });
